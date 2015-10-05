@@ -41,9 +41,8 @@ public class SettingsTable extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.addPhoto:
 
-                fragManager.setCustomAnimations(R.animator.gla_there_come, R.animator.gla_there_gone);
-                fragManager.addToBackStack("");
-                fragManager.replace(R.id.settings_menu, new SettingsAddPhoto(), "TransferSend");
+                fragManager.addToBackStack(null);
+                fragManager.replace(R.id.drawer_layout, new SettingsAddPhoto());
 
                 break;
         }

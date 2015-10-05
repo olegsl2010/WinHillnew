@@ -2,13 +2,8 @@ package pro.winhill.winhillnew;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -17,11 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import pro.winhill.winhillnew.adapters.FragmentAdapter;
 import pro.winhill.winhillnew.transfer.TransferRequestMenu;
 import pro.winhill.winhillnew.transfer.TransferSendMenu;
 
@@ -58,15 +50,6 @@ public class TransferActivity extends AppCompatActivity {
             setupViewPager(viewPager);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
@@ -89,13 +72,14 @@ public class TransferActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         adapter.addFragment(new TransferSendMenu(), "Send");
         adapter.addFragment(new TransferRequestMenu(), "Reqest");
         viewPager.setAdapter(adapter);
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.getMenu().getItem(1).setChecked(true);
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -107,46 +91,16 @@ public class TransferActivity extends AppCompatActivity {
                             case R.id.nav_home:
                                 intent = new Intent(TransferActivity.this, GeneralActivity.class);
                                 startActivity(intent);
-                                return  true;
+                                break;
                             case R.id.nav_settings:
                                 intent = new Intent(TransferActivity.this, SettingsActivity.class);
                                 startActivity(intent);
-                                return  true;
+                                break;
                         }
                         return true;
                     }
                 });
     }
-
-    static class Adapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragments = new ArrayList<>();
-        private final List<String> mFragmentTitles = new ArrayList<>();
-
-        public Adapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragments.add(fragment);
-            mFragmentTitles.add(title);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitles.get(position);
-        }
-    }
-
 
 }
 
